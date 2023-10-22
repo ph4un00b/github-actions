@@ -9,4 +9,7 @@ Try these:
 * `act -j test` - run the tests
 * `act` - run the the entire pipeline
 * `act -l` - view the execution graph
+## env
+* `act -j env` - takes .env file by default❗
+* `act -j env --env-file .env.example`
 
