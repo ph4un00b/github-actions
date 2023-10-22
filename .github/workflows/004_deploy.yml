@@ -35,7 +35,7 @@ jobs:
         run: 'cargo install monolith'
       - name: markdown-to-standalone-html?
         run: |
-          echo "MY_VARIABLE=debug" >> $GITHUB_OUTPUT"
+          echo "MY_VARIABLE=debug" >> $GITHUB_OUTPUT
           markdown-to-standalone-html -h && echo "MY_VARIABLE=default" >> $GITHUB_OUTPUT
           echo "noop"
         id: md-2-html
