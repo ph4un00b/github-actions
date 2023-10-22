@@ -1,0 +1,18 @@
+name: CI
+on:
+  workflow_dispatch:
+    inputs:
+      A:
+        description: "my A variable"
+        type: string
+      B:
+        description: "my B variable"
+        type: string
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test env vars
+        run: |
+          echo "hola ${{ github.event.inputs.A }} ${{ github.event.inputs.B }}"

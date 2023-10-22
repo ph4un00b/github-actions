@@ -12,4 +12,7 @@ Try these:
 ## env
 * `act -j env` - takes .env file by default❗
 * `act -j env --env-file .env.example`
+## workflow dispatch
+* `act -j dispatch --input A=from --input B=cmd`
+* `act -j dispatch -e .\payload.json`
 
