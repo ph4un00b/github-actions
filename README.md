@@ -15,6 +15,10 @@ Try these:
 - `act` - run the the entire pipeline
 - `act -l` - view the execution graph
 
+## required
+
+- gh
+
 ## env
 
 - `act -j env` - takes .env file by default❗
