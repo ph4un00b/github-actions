@@ -43,10 +43,12 @@ jobs:
           cargo install --path .
 
       - name: build
+        if: ${{ success() }}
         run: 'markdown-to-standalone-html render README.md > build/index.html'
       - name: cat
+        if: ${{ success() }}
         run: 'cat build/index.html'
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: build # The folder the action should deploy.
+      # - name: Deploy 🚀
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: build # The folder the action should deploy.
