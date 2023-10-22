@@ -1,0 +1,52 @@
+name: deploy to github
+"on":
+  workflow_dispatch: null
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - .rusty-hook.toml
+      - "**/Makefile.toml"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: rustup
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+      #  https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
+      # - name: Configure sccache
+      #   run: |
+      #       echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+      #       echo “SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
+      # - name: Run sccache-cache
+      #   uses: mozilla-actions/sccache-action@v0.0.2
+
+
+      - name: monolith?
+        run: 'cargo install monolith'
+      - name: markdown-to-standalone-html?
+        run: markdown-to-standalone-html -h
+      - name: install markdown-to-standalone-html
+        if: ${{ failure() }}
+        run: |
+          git clone https://github.com/EdJoPaTo/markdown-to-standalone-html.git
+          cd markdown-to-standalone-html
+          cargo install --path .
+
+      - name: build
+        run: 'markdown-to-standalone-html render README.md > build/index.html'
+      - name: cat
+        run: 'cat build/index.html'
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build # The folder the action should deploy.
