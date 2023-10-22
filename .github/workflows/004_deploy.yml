@@ -49,14 +49,11 @@ jobs:
           cd markdown-to-standalone-html
           cargo install --path .
 
-      # - name: build
-      #   if: success()
-      #   run: 'markdown-to-standalone-html render README.md > build/index.html'
-      # - name: cat
-      #   if: success()
-      #   run: 'cat build/index.html'
-      # - name: test
-      #   run: '[ -n "$MY_VARIABLE" ] && echo "Variable is set: $MY_VARIABLE"'
+      - name: build
+        run: 'markdown-to-standalone-html render README.md > build/index.html'
+      - name: cat
+        run: 'cat build/index.html'
+
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
