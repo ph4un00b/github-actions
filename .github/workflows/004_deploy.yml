@@ -36,17 +36,17 @@ jobs:
       - name: markdown-to-standalone-html?
         run: markdown-to-standalone-html -h
       - name: install markdown-to-standalone-html
-        if: ${{ failure() }}
+        if: '!cancelled()'
         run: |
           git clone https://github.com/EdJoPaTo/markdown-to-standalone-html.git
           cd markdown-to-standalone-html
           cargo install --path .
 
       - name: build
-        if: ${{ success() }}
+        if: '!cancelled()'
         run: 'markdown-to-standalone-html render README.md > build/index.html'
       - name: cat
-        if: ${{ success() }}
+        if: '!cancelled()'
         run: 'cat build/index.html'
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
