@@ -7,6 +7,12 @@ name: deploy to github
     paths-ignore:
       - .rusty-hook.toml
       - "**/Makefile.toml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
