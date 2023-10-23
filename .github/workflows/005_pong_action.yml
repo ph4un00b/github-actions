@@ -1,0 +1,13 @@
+#* test: act.exe -j pong-action -s GITHUB_TOKEN="$(gh auth token)" -e .\payload.json
+name: pong action
+on:
+  repository_dispatch:
+    types: [my-action]
+jobs:
+  pong-action:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v3
+      #   with:
+      #     ref: ${{ github.event.client_payload.ref }}
+      - run: "echo 'ref: ${{ github.event.client_payload.ref }}, sha: ${{ github.event.client_payload.sha }}'"

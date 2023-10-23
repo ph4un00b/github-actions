@@ -5,6 +5,8 @@
   },
   "client_payload": {
     "unit": false,
-    "integration": true
+    "integration": true,
+    "ref": "jamon",
+    "sha": "1234"
   }
 }
