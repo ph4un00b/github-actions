@@ -29,8 +29,10 @@ Try these:
 - `act -j dispatch --input A=from --input B=cmd`
 - `act -j dispatch -e .\payload.json`
 
-# github
+## github
 
 - `act -j deploy -s GITHUB_TOKEN="$(gh auth token)"`
 
 # FIN
+
+- 🎉
