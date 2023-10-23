@@ -8,7 +8,7 @@ name: deploy to github
       - .rusty-hook.toml
       - "**/Makefile.toml"
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,8 +29,6 @@ jobs:
       #       echo “SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
       # - name: Run sccache-cache
       #   uses: mozilla-actions/sccache-action@v0.0.2
-
-
       - name: monolith?
         run: 'cargo install monolith'
       - name: markdown-to-standalone-html?
@@ -58,11 +56,32 @@ jobs:
       #   run: 'ls build'
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           name: build
           path: ./build
+
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
       #     folder: build # The folder the action should deploy.
+  deploy:
+    #* Add a dependency to the build job
+    needs: build
+
+    #* Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      contents: read
+      pages: write      #? to deploy to Pages
+      id-token: write   #? to verify the deployment originates from an appropriate source
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    #* Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
