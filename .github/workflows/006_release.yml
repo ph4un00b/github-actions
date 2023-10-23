@@ -8,7 +8,8 @@ jobs:
   release-simple:
     runs-on: ubuntu-latest
     steps:
-    # - uses: actions/checkout@v3
+      #? git or: failed to run git: fatal: not a git repository (or any of the parent directories): .git
+    - uses: actions/checkout@v3
     - name: Create a Release
       uses: elgohr/Github-Release-Action@v5
       env:
