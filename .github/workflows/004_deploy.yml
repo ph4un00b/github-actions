@@ -54,6 +54,8 @@ jobs:
         run: 'markdown-to-standalone-html render README.md > build/index.html'
       - name: cat
         run: 'cat build/index.html'
+      - name: ls
+        run: 'ls build'
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
