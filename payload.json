@@ -1,6 +1,10 @@
 {
-    "inputs": {
-        "A": "Manual Workflow",
-        "B": "ABC"
-    }
+  "inputs": {
+    "A": "Manual Workflow",
+    "B": "ABC"
+  },
+  "client_payload": {
+    "unit": false,
+    "integration": true
+  }
 }

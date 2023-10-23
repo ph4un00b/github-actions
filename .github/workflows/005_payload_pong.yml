@@ -1,0 +1,12 @@
+#* local test: act.exe -j payloadEv -s GITHUB_TOKEN="$(gh auth token)" -e .\payload.json
+#* Invoke-RestMethod -Uri "https://api.github.com/repos/ph4un00b/github-actions/dispatches" -Method Post -Headers @{"Accept" = "application/vnd.github+json"; "Authorization" = "Bearer $(gh auth token)"; "X-GitHub-Api-Version" = "2022-11-28"} -Body '{"event_type":"my-payload","client_payload":{"unit":false,"integration":false}}' -ContentType "application/json"
+name: ping receiver with payload
+on:
+  repository_dispatch:
+    types: [my-payload]
+jobs:
+  payloadEv:
+    runs-on: ubuntu-latest
+    steps:
+      - name: receiver with payload
+        run: "echo 'unit: ${{ github.event.client_payload.unit }}, int: ${{ github.event.client_payload.integration }}'"
