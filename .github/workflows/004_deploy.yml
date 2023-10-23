@@ -1,5 +1,8 @@
 name: deploy to github
-"on":
+env:
+  #* Setting an environment variable with the value of a configuration variable
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+on:
   workflow_dispatch:
     inputs:
       PROD:
@@ -8,6 +11,7 @@ name: deploy to github
       DEV:
         description: "my DEV variable"
         type: boolean
+
   push:
     branches:
       - master
@@ -65,15 +69,15 @@ jobs:
         run: 'markdown-to-standalone-html render README.md > build/index.html'
       - name: test env vars
         run: |
-          echo "dev: ${{ env.DEV }} prod: ${{ env.PROD }}"
+          echo "dev: ${{ vars.DEV }} prod: ${{ vars.PROD }}"
       - name: cat
-        if: ${{ env.DEV }}
+        if: ${{ vars.DEV }}
         run: 'cat build/index.html'
       - name: ls
         run: 'ls build'
 
       - name: Upload artifact
-        if: ${{ env.PROD }}
+        if: ${{ vars.PROD }}
         uses: actions/upload-pages-artifact@v2
         with:
           name: build
@@ -96,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
-        if: ${{ env.PROD }}
+        if: ${{ vars.PROD }}
         id: deployment
         uses: actions/deploy-pages@v2
         with:
