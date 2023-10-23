@@ -32,3 +32,5 @@ Try these:
 # github
 
 - `act -j deploy -s GITHUB_TOKEN="$(gh auth token)"`
+
+# FIN
