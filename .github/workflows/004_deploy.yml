@@ -60,17 +60,11 @@ jobs:
       #   run: 'cat build/index.html'
       # - name: ls
       #   run: 'ls build'
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
           name: build
           path: ./build
-
-      # - name: Deploy 🚀
-      #   uses: JamesIves/github-pages-deploy-action@v4
-      #   with:
-      #     folder: build # The folder the action should deploy.
   deploy:
     #* Add a dependency to the build job
     needs: build
@@ -93,3 +87,7 @@ jobs:
         uses: actions/deploy-pages@v2
         with:
           artifact_name: build
+      # - name: Deploy 🚀
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: build # The folder the action should deploy.
