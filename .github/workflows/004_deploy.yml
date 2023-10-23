@@ -1,6 +1,13 @@
 name: deploy to github
 "on":
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      PROD:
+        description: "my PROD variable"
+        type: boolean
+      DEV:
+        description: "my DEV variable"
+        type: boolean
   push:
     branches:
       - master
@@ -56,11 +63,17 @@ jobs:
 
       - name: build
         run: 'markdown-to-standalone-html render README.md > build/index.html'
-      # - name: cat
-      #   run: 'cat build/index.html'
-      # - name: ls
-      #   run: 'ls build'
+      - name: test env vars
+        run: |
+          echo "dev: ${{ env.DEV }} prod: ${{ env.PROD }}"
+      - name: cat
+        if: ${{ env.DEV }}
+        run: 'cat build/index.html'
+      - name: ls
+        run: 'ls build'
+
       - name: Upload artifact
+        if: ${{ env.PROD }}
         uses: actions/upload-pages-artifact@v2
         with:
           name: build
@@ -75,18 +88,20 @@ jobs:
       pages: write      #? to deploy to Pages
       id-token: write   #? to verify the deployment originates from an appropriate source
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # environment:
+      # name: github-pages
+      # url: ${{ steps.deployment.outputs.page_url }}
 
     #* Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: build
+      - name: ls
+        run: 'ls -lahrt'
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v2
+      #   with:
+      #     artifact_name: build
       # - name: Deploy 🚀
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
