@@ -52,12 +52,17 @@ jobs:
 
       - name: build
         run: 'markdown-to-standalone-html render README.md > build/index.html'
-      - name: cat
-        run: 'cat build/index.html'
-      - name: ls
-        run: 'ls build'
+      # - name: cat
+      #   run: 'cat build/index.html'
+      # - name: ls
+      #   run: 'ls build'
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          folder: build # The folder the action should deploy.
+          name: build
+          path: ./build
+      # - name: Deploy 🚀
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     folder: build # The folder the action should deploy.
