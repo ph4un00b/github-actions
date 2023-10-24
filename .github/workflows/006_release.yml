@@ -7,6 +7,8 @@ on:
 jobs:
   release-simple:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       #? git or: failed to run git: fatal: not a git repository (or any of the parent directories): .git
     - uses: actions/checkout@v3
