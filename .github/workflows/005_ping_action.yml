@@ -2,13 +2,14 @@
 name: ping action
 on:
   repository_dispatch:
+    types: [ping-action]
 
 jobs:
   ping-action:
     runs-on: ubuntu-latest
     steps:
-      #? @see https://github.com/peter-evans/repository-dispatch#example
       - name: Repository Dispatch
+        #? @see https://github.com/peter-evans/repository-dispatch#example
         uses: peter-evans/repository-dispatch@v2
         with:
           event-type: my-action
