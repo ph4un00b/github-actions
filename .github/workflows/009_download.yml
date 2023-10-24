@@ -1,0 +1,25 @@
+#* act.exe -j download -s GITHUB_TOKEN="$(gh auth token)"
+name: Download
+on:
+  repository_dispatch:
+    types: [download]
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+
+    - name: ls
+      run: 'ls'
+
+    - uses: robinraju/release-downloader@v1.8
+      with:
+        repository: "ph4un00b/github-actions"
+        latest: true
+        fileName: "index.html"
+
+    - name: cat
+      run: 'cat index.html'
+
