@@ -1,0 +1,10 @@
+#* test: act.exe -j pong-action -s GITHUB_TOKEN="$(gh auth token)" -e .\payload.json
+name: modified book files
+on:
+  repository_dispatch:
+    types: [modified-book]
+jobs:
+  pong-action:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo 'payload: ${{ github.event.client_payload }}'"
