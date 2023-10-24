@@ -1,0 +1,21 @@
+#* Invoke-RestMethod -Uri "https://api.github.com/repos/ph4un00b/github-actions/dispatches" -Method Post -Headers @{"Accept" = "application/vnd.github+json"; "Authorization" = "Bearer $(gh auth token)"; "X-GitHub-Api-Version" = "2022-11-28"} -Body '{"event_type":"simple-release"}' -ContentType "application/json"
+name: Simple Release
+on:
+  repository_dispatch:
+    types: [simple-release]
+
+jobs:
+  release-simple:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      #? git or: failed to run git: fatal: not a git repository (or any of the parent directories): .git
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: create
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run:  gh release create -t "hola" "$(date +%Y%m%d%H%M%S)" --generate-notes
+
