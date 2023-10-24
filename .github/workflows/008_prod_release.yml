@@ -1,0 +1,76 @@
+#* act.exe -j release -s GITHUB_TOKEN="$(gh auth token)" -n
+name: Releases
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: rustup
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+      #? @see: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
+      # - name: Configure sccache
+      #   run: |
+      #       echo "RUSTC_WRAPPER=sccache" >> $GITHUB_ENV
+      #       echo “SCCACHE_GHA_ENABLED=true" >> $GITHUB_ENV
+      # - name: Run sccache-cache
+      #   uses: mozilla-actions/sccache-action@v0.0.2
+      - name: monolith?
+        run: 'cargo install monolith'
+      - name: markdown-to-standalone-html?
+        run: |
+          echo "MY_VARIABLE=debug" >> $GITHUB_OUTPUT
+          markdown-to-standalone-html -h && echo "MY_VARIABLE=default" >> $GITHUB_OUTPUT
+          echo "noop"
+        id: md-2-html
+
+      - name: GITHUB_OUTPUT
+        run: echo "It is ${{ steps.md-2-html.outputs.MY_VARIABLE }}"
+
+      - name: install markdown-to-standalone-html
+        if: ${{ steps.md-2-html.outputs.MY_VARIABLE == 'debug' }}
+        run: |
+          git clone https://github.com/EdJoPaTo/markdown-to-standalone-html.git
+          cd markdown-to-standalone-html
+          cargo install --path .
+
+      - name: build
+        run: 'markdown-to-standalone-html render README.md > build/index.html'
+
+      - name: test env vars
+        run: |
+          echo "dev: ${{ vars.DEV }} prod: ${{ vars.PROD }}"
+
+      - name: cat
+        run: 'cat build/index.html'
+
+      - name: ls
+        run: 'ls build'
+
+      - uses: 'marvinpinto/action-automatic-releases@latest'
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: 'latest'
+          prerelease: false
+          title: 'Latest ✅'
+          files: |
+            LICENSE
+            build/*.html
+
