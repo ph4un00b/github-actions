@@ -7,4 +7,4 @@ jobs:
   pong-action:
     runs-on: ubuntu-latest
     steps:
-      - run: "echo 'payload: ${{ github.event.client_payload }}'"
+      - run: "echo 'payload: ${{ toJSON(github.event.client_payload) }}'"
