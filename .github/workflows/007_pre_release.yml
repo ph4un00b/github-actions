@@ -67,12 +67,12 @@ jobs:
       - name: ls
         run: 'ls build'
 
-      - uses: 'marvinpinto/action-automatic-releases@latest'
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: 'pre-release'
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "canary"
           prerelease: true
-          title: 'Development Build 🚬'
+          title: "Development Build"
           files: |
             LICENSE
             build
